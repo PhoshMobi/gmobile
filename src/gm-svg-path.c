@@ -284,7 +284,7 @@ is_command (char c)
   case 'a':
   case 'C': /* cubic bezier */
   case 'c':
-  case 'H': /* horizonal line */
+  case 'H': /* horizontal line */
   case 'h':
   case 'L': /* line */
   case 'l':

@@ -268,15 +268,17 @@ struct mcc_list mcc_list[] = {
 /**
  * gm_mcc_to_iso:
  * @mcc: The mcc
- * @error: The error
+ * @err: The error
  *
  * Get the ISO 3316-1 country code based on a given mobile country
  * code (MCC). It's sufficient for the given string to have the
  * MCC as prefix. In other words it is o.k. to pass an IMSI.
  *
- * On error `NULL` is returned and `errror` is set.
+ * On error `NULL` is returned and `error` is set.
  *
  * Returns: The country code or NULL.
+ *
+ * Since: 0.4.0
  */
 const char *
 gm_mcc_to_iso (const char *mcc, GError **err)
