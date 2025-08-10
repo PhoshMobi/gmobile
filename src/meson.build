@@ -90,6 +90,7 @@ if get_option('gtk_doc') or get_option('introspection')
     includes: ['Gio-2.0'],
     install: get_option('introspection'),
     extra_args: gmobile_gir_extra_args,
+    fatal_warnings: true,
   )
 
   if get_option('vapi')

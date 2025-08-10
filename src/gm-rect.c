@@ -10,8 +10,8 @@
 
 /**
  * GmRect:
- * @x: x coordindate of the upper, left corner
- * @y: y coordindate of the upper, left corner
+ * @x: x coordinate of the upper, left corner
+ * @y: y coordinate of the upper, left corner
  * @width: the width of the rectangle
  * @height: the height of the rectangle
  *

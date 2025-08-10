@@ -161,10 +161,6 @@ gm_timeout_source_once_new (gulong timeout_ms, int clockid, GError **err)
  * Sets a function to be called after a timeout with priority @priority.
  * Correctly calculates the timeout even when the system is suspended in between.
  *
- * This internally creates a main loop source using
- * g_timeout_source_new_seconds() and attaches it to the main loop context
- * using g_source_attach().
- *
  * The timeout given is in terms of `CLOCK_BOOTTIME` time, it hence is also
  * correct across suspend and resume. If that doesn't matter use
  * `g_timeout_add_seconds_full` instead.
@@ -177,7 +173,7 @@ gm_timeout_source_once_new (gulong timeout_ms, int clockid, GError **err)
  * Returns: the ID (greater than 0) of the event source or 0 in case of error.
  *
  * Since: 0.0.1
- **/
+ */
 guint
 gm_timeout_add_seconds_once_full (gint            priority,
                                   gulong          seconds,
@@ -204,7 +200,7 @@ gm_timeout_add_seconds_once_full (gint            priority,
 }
 
 /**
- * gm_timeout_add_seconds_once:
+ * gm_timeout_add_seconds_once: (skip):
  * @seconds: the timeout in seconds
  * @function: function to call
  * @data: data to pass to @function
@@ -212,10 +208,6 @@ gm_timeout_add_seconds_once_full (gint            priority,
  * Sets a function to be called after a timeout with the default
  * priority, %G_PRIORITY_DEFAULT. Correctly calculates the timeout
  * even when the system is suspended in between.
- *
- * This internally creates a main loop source using
- * g_timeout_source_new_seconds() and attaches it to the main loop context
- * using g_source_attach().
  *
  * The timeout given is in terms of `CLOCK_BOOTTIME` time, it hence is also
  * correct across suspend and resume. If that doesn't matter use
@@ -227,7 +219,7 @@ gm_timeout_add_seconds_once_full (gint            priority,
  * Returns: the ID (greater than 0) of the event source.
  *
  * Since: 0.0.1
- **/
+ */
 guint
 gm_timeout_add_seconds_once (int             seconds,
                              GSourceOnceFunc function,
@@ -238,7 +230,35 @@ gm_timeout_add_seconds_once (int             seconds,
   return gm_timeout_add_seconds_once_full (G_PRIORITY_DEFAULT, seconds, function, data, NULL);
 }
 
-
+/**
+ * gm_wakeup_timeout_add_seconds_once_full: (rename-to gm_wakeup_timeout_add_seconds_once)
+ * @priority: the priority of the timeout source. Typically this will be in
+ *   the range between %G_PRIORITY_DEFAULT and %G_PRIORITY_HIGH.
+ * @seconds: the timeout in seconds
+ * @function: function to call
+ * @data: data to pass to @function
+ * @notify: (nullable): function to call when the timeout is removed, or %NULL
+ *
+ * Sets a function to be called after a timeout with the default
+ * priority, %G_PRIORITY_DEFAULT. Correctly calculates the timeout
+ * even when the system is suspended in between. It will wake up the
+ * system when needed.
+ *
+ * If the process doesn't have enough permissions to wake the system
+ * creating the timer will fail. On Linux at least `CAP_WAKE_ALARM` capabilities
+ * are needed.
+ *
+ * The timeout given is in terms of `CLOCK_BOOTTIME_ALARM` time, it hence is also
+ * correct across suspend and resume. If that doesn't matter use
+ * `g_timeout_add_seconds` instead.
+ *
+ * Note that glib's `g_timeout_add_seconds()` doesn't take system
+ * suspend/resume into account: https://gitlab.gnome.org/GNOME/glib/-/issues/2739
+ *
+ * Returns: the ID (greater than 0) of the event source or 0 in case of error.
+ *
+ * Since: 0.3.0
+ */
 guint
 gm_wakeup_timeout_add_seconds_once_full (gint            priority,
                                          gulong          seconds,
@@ -265,7 +285,33 @@ gm_wakeup_timeout_add_seconds_once_full (gint            priority,
   return id;
 }
 
-
+/**
+ * gm_wakeup_timeout_add_seconds_once: (skip):
+ * @seconds: the timeout in seconds
+ * @function: function to call
+ * @data: data to pass to @function
+ * @err: An error location
+ *
+ * Sets a function to be called after a timeout with the default
+ * priority, %G_PRIORITY_DEFAULT. Correctly calculates the timeout
+ * even when the system is suspended in between. It will wake up the
+ * system when needed.
+ *
+ * If the process doesn't have enough permissions to wake the system
+ * creating the timer will fail. On Linux at least `CAP_WAKE_ALARM` capabilities
+ * are needed.
+ *
+ * The timeout given is in terms of `CLOCK_BOOTTIME_ALARM` time, it hence is also
+ * correct across suspend and resume. If that doesn't matter use
+ * `g_timeout_add_seconds` instead.
+ *
+ * Note that glib's `g_timeout_add_seconds()` doesn't take system
+ * suspend/resume into account: https://gitlab.gnome.org/GNOME/glib/-/issues/2739
+ *
+ * Returns: the ID (greater than 0) of the event source or `0` on error.
+ *
+ * Since: 0.3.0
+ */
 guint
 gm_wakeup_timeout_add_seconds_once (int             seconds,
                                     GSourceOnceFunc function,
