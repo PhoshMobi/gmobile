@@ -11,7 +11,6 @@ If you need to build gmobile, get the source from
 Like other libraries, gmobile uses `pkg-config` to provide compiler
 options. The package name is `gmobile`.
 
-
 If you use Automake/Autoconf, in your `configure.ac` script, you might specify
 something like:
 
@@ -73,5 +72,5 @@ You can then use `gmobile_dep` in your mesn build files like:
 ```meson
 gmobile = dependency('gmobile',
                      fallback: ['gmobile', 'gmobile_dep'],
-			         native: true)
+                     native: true)
 ```
