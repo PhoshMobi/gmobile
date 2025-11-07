@@ -214,7 +214,7 @@ main (int argc, char **argv)
   g_unlink (phoc_ini);
 
   g_clear_object (&phoc);
-  g_clear_object (&loop);
+  g_main_loop_unref (loop);
 
   return EXIT_SUCCESS;
 }
