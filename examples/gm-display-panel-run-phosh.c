@@ -6,7 +6,7 @@
  * Author: Guido Günther <agx@sigxcpu.org>
  */
 
-/* This examples launches phosh and phoc emulationg the display
+/* This examples launches phosh and phoc emulating the display
    of the given device tree compatible */
 
 #define GMOBILE_USE_UNSTABLE_API
@@ -117,7 +117,8 @@ phoc_utils_compute_scale (int32_t phys_width, int32_t phys_height,
 
 
 
-int main (int argc, char **argv)
+int
+main (int argc, char **argv)
 {
   g_autoptr (GOptionContext) opt_context = NULL;
   gboolean version = FALSE;
