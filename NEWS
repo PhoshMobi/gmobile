@@ -1,3 +1,13 @@
+gmobile 0.5.0
+-------------
+Released November 2025
+* Add display information for Fairphone 6
+* Allow to run gm-display-panel-run-phosh headless allowing one to use
+  the tool with compositors that restrict window sizes and in ci.
+* Contributors:
+    * Guido Günther
+    * Luca Weiss
+
 gmobile 0.4.0
 -------------
 Released June 2025
