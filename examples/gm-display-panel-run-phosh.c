@@ -6,7 +6,7 @@
  * Author: Guido Günther <agx@sigxcpu.org>
  */
 
-/* This examples launches phosh and phoc emulationg the display
+/* This examples launches phosh and phoc emulating the display
    of the given device tree compatible */
 
 #define GMOBILE_USE_UNSTABLE_API
@@ -50,15 +50,17 @@ on_shutdown_signal (gpointer unused)
 
 
 static char *
-write_phoc_ini (GmDisplayPanel *panel, gdouble scale)
+write_phoc_ini (GmDisplayPanel *panel, gdouble scale, gboolean headless)
 {
   g_autoptr (GError) err = NULL;
-  g_autoptr (GString) content = g_string_new ("[output:WL-1]\n");
+  g_autoptr (GString) content = g_string_new ("");
   g_autofree char *phoc_ini = NULL;
   int xres = gm_display_panel_get_x_res (panel);
   int yres = gm_display_panel_get_y_res (panel);
+  const char *output = headless ? "HEADLESS" : "WL";
   int fd;
 
+  g_string_append_printf (content, "[output:%s-1]\n", output);
   g_string_append_printf (content, "mode = %dx%d\n", xres, yres);
   g_string_append_printf (content, "scale = %.2f\n", scale);
   fd = g_file_open_tmp ("phoc_XXXXXX.ini", &phoc_ini, &err);
@@ -117,10 +119,11 @@ phoc_utils_compute_scale (int32_t phys_width, int32_t phys_height,
 
 
 
-int main (int argc, char **argv)
+int
+main (int argc, char **argv)
 {
   g_autoptr (GOptionContext) opt_context = NULL;
-  gboolean version = FALSE;
+  gboolean version = FALSE, headless = FALSE;
   g_autoptr (GError) err = NULL;
   g_autoptr (GmDeviceInfo) info = NULL;
   g_auto (GStrv) compatibles = NULL;
@@ -129,13 +132,15 @@ int main (int argc, char **argv)
   g_autofree char *phoc_ini = NULL;
   g_autoptr (GSubprocessLauncher) phoc_launcher = NULL;
   double scale_opt = -1.0;
-  const char *phosh_bin;
+  const char *phosh_bin, *backend;
 
   const GOptionEntry options [] = {
     {"compatible", 'c', 0, G_OPTION_ARG_STRING_ARRAY, &compatibles_opt,
      "Device tree compatibles to use for panel lookup ", NULL},
     {"scale", 's', 0, G_OPTION_ARG_DOUBLE, &scale_opt,
      "The display scale", NULL },
+    {"headless", 'H', 0, G_OPTION_ARG_NONE, &headless,
+     "Use headless backend", NULL },
     {"version", 0, 0, G_OPTION_ARG_NONE, &version,
      "Show version information", NULL},
     { NULL, 0, 0, G_OPTION_ARG_NONE, NULL, NULL, NULL }
@@ -177,16 +182,16 @@ int main (int argc, char **argv)
     g_message ("Using scale %f", scale_opt);
   }
 
-  phoc_ini = write_phoc_ini (panel, scale_opt);
+  phoc_ini = write_phoc_ini (panel, scale_opt, headless);
   if (!phoc_ini)
     return EXIT_FAILURE;
 
   g_message ("Using %s as phoc config", phoc_ini);
 
+  backend = headless ? "headless" : "wayland";
   phosh_bin = g_getenv ("PHOSH_BIN") ?: PHOSH_BIN;
   phoc_launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_SEARCH_PATH_FROM_ENVP);
   g_subprocess_launcher_set_environ (phoc_launcher, NULL);
-  g_subprocess_launcher_setenv (phoc_launcher, "WLR_BACKENDS", "wayland", TRUE);
   g_subprocess_launcher_setenv (phoc_launcher, "GSETTINGS_BACKEND", "memory", TRUE);
   g_subprocess_launcher_setenv (phoc_launcher, "PHOC_DEBUG", "cutouts", TRUE);
   g_subprocess_launcher_setenv (phoc_launcher, "PHOSH_DEBUG", "fake-builtin", TRUE);
@@ -195,7 +200,7 @@ int main (int argc, char **argv)
     g_autofree char *opt = g_strjoinv (",", compatibles_opt);
     g_subprocess_launcher_setenv (phoc_launcher, "GMOBILE_DT_COMPATIBLES", opt, TRUE);
   }
-  g_subprocess_launcher_setenv (phoc_launcher, "WLR_BACKENDS", "wayland", TRUE);
+  g_subprocess_launcher_setenv (phoc_launcher, "WLR_BACKENDS", backend, TRUE);
 
   phoc = g_subprocess_launcher_spawnv (phoc_launcher,
                                        (const char * const [])
@@ -213,7 +218,7 @@ int main (int argc, char **argv)
   g_unlink (phoc_ini);
 
   g_clear_object (&phoc);
-  g_clear_object (&loop);
+  g_main_loop_unref (loop);
 
   return EXIT_SUCCESS;
 }
