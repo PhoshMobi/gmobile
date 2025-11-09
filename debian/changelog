@@ -1,3 +1,21 @@
+gmobile (0.5.0) experimental; urgency=medium
+
+  [ Luca Weiss ]
+  * data: Add display information for fairphone,fp6
+
+  [ Guido Günther ]
+  * build: Make gir warnings fatal.
+    Otherwise we'll acquire more warnings over time
+  * build: Make doc warnings fatal.
+    Otherwise we'll acquire more warnings over time
+  * run-phosh: Use correct unref function
+  * run-phosh: Allow for headless backend.
+    Passing `--headless` or `-h` will run things headless rather
+    than preseinting a window on screen.
+    This will also make it easy to run this in CI
+
+ -- Guido Günther <agx@sigxcpu.org>  Sun, 09 Nov 2025 17:59:31 +0100
+
 gmobile (0.4.0) experimental; urgency=medium
 
   [ Guido Günther ]
