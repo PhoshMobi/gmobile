@@ -39,6 +39,8 @@ on_shutdown_signal (gpointer unused)
   g_autoptr (GError) err = NULL;
   gboolean success;
 
+  g_subprocess_send_signal (phoc, SIGTERM);
+
   success = g_subprocess_wait (phoc, NULL, &err);
   if (!success)
     g_warning ("Failed to terminate phoc: %s", err->message);
