@@ -45,3 +45,21 @@ gmobile:name:white:flash:dt:oneplus,fajita*
 gmobile:name:yellow:flash:dt:oneplus,fajita*
  GM_TORCH_MIN_BRIGHTNESS=1
 
+###########################################################
+# Purism
+###########################################################
+
+# Purism Librem L5
+gmobile:name:white:flash:dt:purism,librem5*
+ GM_TORCH_MIN_BRIGHTNESS=1
+
+###########################################################
+# Xiaomi
+###########################################################
+
+# Xiaomi Pocophone F1
+gmobile:name:white:flash:dt:xiaomi,beryllium*
+ GM_TORCH_MIN_BRIGHTNESS=1
+
+gmobile:name:yellow:flash:dt:xiaomi,beryllium*
+ GM_TORCH_MIN_BRIGHTNESS=1
