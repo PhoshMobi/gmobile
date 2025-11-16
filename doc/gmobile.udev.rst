@@ -40,6 +40,23 @@ responsible for applying it.
 
 For details on how to add these properties to hwdb see below.
 
+TORCH BRIGHTNESS
+----------------
+
+A LED that is uses as camera flash can also be used as torch. The minimum torch
+brightness should still be visible to the user to avoid battery drain. This is
+usually the case at level ``1``. The ``GM_TORCH_MIN_BRIGHTNESS``
+allows to override this value.
+
+::
+
+  GM_TORCH_MIN_BRIGHTNESS=10
+
+Note that gmobile merely provides that information. The applications using the
+flash as torch is responsible for applying it.
+
+For details on how to add these properties to hwdb see below.
+
 CONFIGURING HWDB
 ----------------
 
@@ -174,4 +191,4 @@ as the hwdb format might change without notice.
 See also
 --------
 
-``hwdb(7)`` ``systemd-hwdb(8)`` ``phoc(1)``
+``hwdb(7)`` ``systemd-hwdb(8)`` ``phoc(1)`` ``phosh(1)``

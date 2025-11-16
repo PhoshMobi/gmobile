@@ -17,19 +17,19 @@
 # Supported hardware matches are:
 #
 #  - AT keyboard DMI data matches:
-#      evdev:atkbd:dmi:bvn*:bvr*:bd*:svn<vendor>:pn<product>:pvr*
+#      gmobile:atkbd:dmi:bvn*:bvr*:bd*:svn<vendor>:pn<product>:pvr*
 #    <vendor> and <product> are the firmware-provided strings
 #    exported by the kernel DMI modalias, see /sys/class/dmi/id/modalias.
 #
 #  - Input driver device name and DMI data match:
-#      evdev:name:<input device name>:dmi:bvn*:bvr*:bd*:svn<vendor>:pn*
+#      gmobile:name:<input device name>:dmi:bvn*:bvr*:bd*:svn<vendor>:pn*
 #    <input device name> is the name of the device specified by the
 #    driver, <vendor> is the firmware-provided string exported
 #    by the kernel DMI modalias, see /sys/class/dmi/id/modalias
 #
-#  - Input driver device name and device tree compatible match
-#      evdev:name:<input device name>:dt:<compatible>*
-#    <input device name> is the name device specified by the
+#  - Input driver device name and machine's device tree compatible match
+#      gmobile:name:<input device name>:dt:<compatible>*
+#    <input device name> is the device name specified by the
 #    driver, <model> is the first entry of the device tree's compatible
 #    string from /sys/firmware/devicetree/base/compatible.
 #
