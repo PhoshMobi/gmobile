@@ -20,6 +20,7 @@
 
 #include <math.h>
 
+#define PHOC_BIN "phoc"
 #define PHOSH_BIN "/usr/libexec/phosh"
 
 GMainLoop   *loop;
@@ -197,7 +198,7 @@ main (int argc, char **argv)
   g_autofree char *phoc_ini = NULL;
   g_autoptr (GSubprocessLauncher) phoc_launcher = NULL;
   double scale_opt = -1.0;
-  const char *phosh_bin, *backend;
+  const char *phosh_bin, *phoc_bin, *backend;
 
   const GOptionEntry options [] = {
     {"compatible", 'c', 0, G_OPTION_ARG_STRING_ARRAY, &compatibles_opt,
@@ -257,6 +258,7 @@ main (int argc, char **argv)
 
   backend = headless ? "headless" : "wayland";
   phosh_bin = g_getenv ("PHOSH_BIN") ?: PHOSH_BIN;
+  phoc_bin = g_getenv ("PHOC_BIN") ?: PHOC_BIN;
   phoc_launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_SEARCH_PATH_FROM_ENVP);
   g_subprocess_launcher_set_environ (phoc_launcher, NULL);
   g_subprocess_launcher_setenv (phoc_launcher, "GSETTINGS_BACKEND", "memory", TRUE);
@@ -271,7 +273,7 @@ main (int argc, char **argv)
 
   phoc = g_subprocess_launcher_spawnv (phoc_launcher,
                                        (const char * const [])
-                                       { "phoc", "-C", phoc_ini,
+                                       { phoc_bin, "-C", phoc_ini,
                                          "-E", phosh_bin, NULL },
                                        &err);
   g_unix_signal_add (SIGTERM, on_shutdown_signal, NULL);
