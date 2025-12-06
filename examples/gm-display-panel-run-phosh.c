@@ -260,7 +260,7 @@ main (int argc, char **argv)
   phoc_launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_SEARCH_PATH_FROM_ENVP);
   g_subprocess_launcher_set_environ (phoc_launcher, NULL);
   g_subprocess_launcher_setenv (phoc_launcher, "GSETTINGS_BACKEND", "memory", TRUE);
-  g_subprocess_launcher_setenv (phoc_launcher, "PHOC_DEBUG", "cutouts", TRUE);
+  g_subprocess_launcher_setenv (phoc_launcher, "PHOC_DEBUG", "cutouts,fake-builtin", TRUE);
   g_subprocess_launcher_setenv (phoc_launcher, "PHOSH_DEBUG", "fake-builtin", TRUE);
   g_subprocess_launcher_setenv (phoc_launcher, "G_MESSAGES_DEBUG", "phosh-layout-manager", TRUE);
   if (compatibles_opt && compatibles_opt[0]) {
