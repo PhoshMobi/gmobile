@@ -207,7 +207,7 @@ main (int argc, char **argv)
     {"headless", 'H', 0, G_OPTION_ARG_NONE, &headless,
      "Use headless backend", NULL },
     {"screenshot", 'S', 0, G_OPTION_ARG_FILENAME, &screenshot_name,
-     "Take screenshot", NULL},
+     "Take screenshot with the given name", NULL},
     {"version", 0, 0, G_OPTION_ARG_NONE, &version,
      "Show version information", NULL},
     { NULL, 0, 0, G_OPTION_ARG_NONE, NULL, NULL, NULL }
@@ -277,7 +277,8 @@ main (int argc, char **argv)
   g_unix_signal_add (SIGTERM, on_shutdown_signal, NULL);
   g_unix_signal_add (SIGINT, on_shutdown_signal, NULL);
 
-  g_timeout_add_seconds_once (2, on_timeout, screenshot_name);
+  if (screenshot_name)
+    g_timeout_add_seconds_once (2, on_timeout, screenshot_name);
 
   loop = g_main_loop_new (NULL, FALSE);
 
