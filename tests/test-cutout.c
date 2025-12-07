@@ -13,13 +13,14 @@
 static void
 test_gm_cutout_bounding_box (void)
 {
-  char *path = "M455, 0 \
+  const char *path =
+    "M455, 0 \
                 V 79    \
                 H 625   \
                 V 0     \
                 Z";
   g_autoptr (GError) err = NULL;
-  GmCutout *cutout;
+  g_autoptr (GmCutout) cutout = NULL;
   const GmRect *rect;
 
   cutout = gm_cutout_new (path);
