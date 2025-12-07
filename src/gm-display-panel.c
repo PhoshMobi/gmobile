@@ -30,6 +30,7 @@ enum {
   PROP_WIDTH,
   PROP_HEIGHT,
   PROP_BORDER_RADIUS,
+  PROP_CORNER_RADII,
   PROP_LAST_PROP
 };
 static GParamSpec *props[PROP_LAST_PROP];
@@ -41,7 +42,7 @@ struct _GmDisplayPanel {
   GListStore *cutouts;
   int         x_res;
   int         y_res;
-  int         border_radius;
+  int         corner_radii[4];
   int         width;
   int         height;
 };
@@ -51,6 +52,30 @@ static void gm_display_panel_json_serializable_iface_init (JsonSerializableIface
 G_DEFINE_TYPE_WITH_CODE (GmDisplayPanel, gm_display_panel, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (JSON_TYPE_SERIALIZABLE,
                                                 gm_display_panel_json_serializable_iface_init));
+
+
+static void
+gm_display_panel_set_border_radius (GmDisplayPanel *self, int border_radius)
+{
+  for (int i = 0; i < G_N_ELEMENTS (self->corner_radii); i++)
+    self->corner_radii[i] = border_radius;
+}
+
+
+static void
+gm_display_panel_set_corner_radii (GmDisplayPanel *self, GArray *corner_radii)
+{
+  if (corner_radii == NULL || corner_radii->len == 0) {
+    gm_display_panel_set_corner_radii (self, 0);
+    return;
+  }
+
+  g_return_if_fail (corner_radii->len == 4);
+
+  for (int i = 0; i < G_N_ELEMENTS (self->corner_radii); i++)
+    self->corner_radii[i] = g_array_index (corner_radii, int, i);
+}
+
 
 static void
 gm_display_panel_set_property (GObject      *object,
@@ -75,7 +100,10 @@ gm_display_panel_set_property (GObject      *object,
     self->y_res = g_value_get_int (value);
     break;
   case PROP_BORDER_RADIUS:
-    self->border_radius = g_value_get_int (value);
+    gm_display_panel_set_border_radius (self, g_value_get_int (value));
+    break;
+  case PROP_CORNER_RADII:
+    gm_display_panel_set_corner_radii (self, g_value_get_boxed (value));
     break;
   case PROP_WIDTH:
     self->width = g_value_get_int (value);
@@ -112,7 +140,12 @@ gm_display_panel_get_property (GObject    *object,
     g_value_set_int (value, gm_display_panel_get_y_res (self));
     break;
   case PROP_BORDER_RADIUS:
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
     g_value_set_int (value, gm_display_panel_get_border_radius (self));
+G_GNUC_END_IGNORE_DEPRECATIONS
+    break;
+  case PROP_CORNER_RADII:
+    g_value_take_boxed (value, gm_display_panel_get_corner_radii (self));
     break;
   case PROP_WIDTH:
     g_value_set_int (value, gm_display_panel_get_width (self));
@@ -143,6 +176,17 @@ gm_display_panel_serializable_serialize_property (JsonSerializable *serializable
       g_autoptr (GObject) cutout = g_list_model_get_item (G_LIST_MODEL (self->cutouts), i);
       json_array_add_element (array, json_gobject_serialize (cutout));
     }
+    node = json_node_init_array (json_node_alloc (), array);
+  } else if (g_strcmp0 (property_name, "corner-radii") == 0) {
+    g_autoptr (JsonArray) array = json_array_sized_new (4);
+
+    for (int i = 0; i < 4; i++) {
+      JsonNode *intnode = json_node_new (JSON_NODE_VALUE);
+
+      json_node_set_int (intnode, self->corner_radii[i]);
+      json_array_add_element (array, intnode);
+    }
+
     node = json_node_init_array (json_node_alloc (), array);
   } else {
     node = json_serializable_default_serialize_property (serializable,
@@ -185,6 +229,27 @@ gm_display_panel_serializable_deserialize_property (JsonSerializable *serializab
       return TRUE;
     }
     return FALSE;
+  } else if (g_strcmp0 (property_name, "corner-radii") == 0 &&
+             JSON_NODE_TYPE (property_node) == JSON_NODE_ARRAY) {
+    JsonArray *array = json_node_get_array (property_node);
+    guint array_len = json_array_get_length (array);
+    g_autoptr (GArray) radii = g_array_new (FALSE, FALSE, sizeof (int));
+
+    if (array_len != 4)
+      return FALSE;
+
+    for (int i = 0; i < array_len; i++) {
+      gint64 val = json_array_get_int_element (array, i);
+      int radius;
+
+      if (val >= G_MAXINT)
+        return FALSE;
+
+      radius = val;
+      g_array_append_val (radii, radius);
+    }
+    g_value_set_boxed (value, radii);
+    return TRUE;
   } else {
     return json_serializable_default_deserialize_property (serializable,
                                                            property_name,
@@ -273,15 +338,28 @@ gm_display_panel_class_init (GmDisplayPanelClass *klass)
   /**
    * GmDisplayPanel:border-radius:
    *
-   * The border radius of the panel edges in device pixels
-   * If a single border radius isn't enough use multiple [type@Cutout].
+   * The corner radius of the panel edges in device pixels.
    *
    * Since: 0.0.1
+   *
+   * Deprecated: 0.6.0: Use [property@DisplayPanel:corner-radii] instead
    */
   props[PROP_BORDER_RADIUS] =
     g_param_spec_int ("border-radius", "", "",
                       0, G_MAXINT, 0,
-                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_DEPRECATED);
+  /**
+   * GmDisplayPanel:corner-radii:
+   *
+   * The radii of the panels corner starting top-left and going
+   * clockwise.
+   *
+   * Since: 0.6.0
+   */
+  props[PROP_CORNER_RADII] =
+    g_param_spec_boxed ("corner-radii", "", "",
+                        G_TYPE_ARRAY,
+                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
   /**
    * GmDisplayPanel:width:
    *
@@ -459,19 +537,63 @@ gm_display_panel_get_y_res (GmDisplayPanel *self)
  * gm_display_panel_get_border_radius:
  * @self: The display panel
  *
- * Gets the panels border radius. 0 indicates rectangular corners.  If
- * given applies to all corners of the panel.
+ * Gets the panels border radius. 0 indicates rectangular corners. If
+ * top and bottom border radius are different then this matches the
+ * top border radius.  given applies to all corners of the panel.
  *
  * Returns: The panel's border radius.
  *
  * Since: 0.0.1
+ *
+ * Deprecated: 0.6.0: Use [method@DisplayPanel.get_corner_radii] instead
  */
 int
 gm_display_panel_get_border_radius (GmDisplayPanel *self)
 {
+  return self->corner_radii[0];
+}
+
+/**
+ * gm_display_panel_get_corner_radii_array: (skip)
+ * @self: The display panel
+ *
+ * Gets the panels border radii starting with the top-left corner
+ * clockwise.
+ *
+ * Returns: The panel's border radii as array of integers
+ *
+ * Since: 0.6.0
+ */
+const int *
+gm_display_panel_get_corner_radii_array (GmDisplayPanel *self)
+{
+  g_return_val_if_fail (GM_IS_DISPLAY_PANEL (self), NULL);
+
+  return self->corner_radii;
+}
+
+/**
+ * gm_display_panel_get_corner_radii:
+ * @self: The display panel
+ *
+ * Gets the panels border radii starting with the top-left corner
+ * clockwise.
+ *
+ * Returns:(transfer full)(element-type int): The panel's border radii.
+ *
+ * Since: 0.6.0
+ */
+GArray *
+gm_display_panel_get_corner_radii (GmDisplayPanel *self)
+{
+  GArray *radii = g_array_new (FALSE, FALSE, sizeof(int));
+
   g_return_val_if_fail (GM_IS_DISPLAY_PANEL (self), 0);
 
-  return self->border_radius;
+  for (int i = 0; i < 4; i++)
+    g_array_append_val (radii, self->corner_radii[i]);
+
+  return radii;
 }
 
 /**

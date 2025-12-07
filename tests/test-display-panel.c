@@ -32,6 +32,7 @@ test_gm_display_panel_parse (void)
   g_autoptr (GError) err = NULL;
   g_autoptr (GmDisplayPanel) panel = NULL;
   g_autoptr (GmCutout) cutout = NULL;
+  g_autoptr (GArray) radii = NULL;
   g_autofree char *out = NULL;
   GListModel *cutouts;
   const GmRect *bounds;
@@ -54,8 +55,64 @@ test_gm_display_panel_parse (void)
 
   g_assert_cmpint (gm_display_panel_get_x_res (panel), ==, 1080);
   g_assert_cmpint (gm_display_panel_get_y_res (panel), ==, 2340);
-
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   g_assert_cmpint (gm_display_panel_get_border_radius (panel), ==, 10);
+G_GNUC_END_IGNORE_DEPRECATIONS
+  radii = gm_display_panel_get_corner_radii (panel);
+  g_assert_cmpint (radii->len, ==, 4);
+  g_assert_cmpint (g_array_index (radii, int, 0), ==, 10);
+
+  g_assert_cmpint (gm_display_panel_get_width (panel), ==, 68);
+  g_assert_cmpint (gm_display_panel_get_height (panel), ==, 145);
+}
+
+
+static void
+test_gm_display_panel_corner_radii (void)
+{
+  const char *json = "                                "
+                     "{                                                "
+                     " \"name\": \"Oneplus 6T\",                       "
+                     " \"x-res\": 1080,                                "
+                     " \"y-res\": 2340,                                "
+                     " \"corner-radii\": [ 10, 11, 12, 13 ],           "
+                     " \"width\": 68,                                  "
+                     " \"height\": 145                                 "
+                     "}                                                ";
+  g_autoptr (GError) err = NULL;
+  g_autoptr (GmDisplayPanel) panel = NULL;
+  g_autoptr (GArray) radii1 = NULL, radii2 = NULL;
+  const int *radii;
+  g_autofree char *out = NULL;
+
+  panel = gm_display_panel_new_from_data (json, &err);
+  g_assert_no_error (err);
+  g_assert_nonnull (panel);
+
+  g_assert_cmpint (gm_display_panel_get_x_res (panel), ==, 1080);
+  g_assert_cmpint (gm_display_panel_get_y_res (panel), ==, 2340);
+
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  g_assert_cmpint (gm_display_panel_get_border_radius (panel), ==, 10);
+G_GNUC_END_IGNORE_DEPRECATIONS
+
+  radii = gm_display_panel_get_corner_radii_array (panel);
+  g_assert_cmpint (radii[GM_CORNER_POSITION_TOP_LEFT], ==, 10);
+  g_assert_cmpint (radii[GM_CORNER_POSITION_TOP_RIGHT], ==, 11);
+  g_assert_cmpint (radii[GM_CORNER_POSITION_BOTTOM_RIGHT], ==, 12);
+  g_assert_cmpint (radii[GM_CORNER_POSITION_BOTTOM_LEFT], ==, 13);
+
+  radii1 = gm_display_panel_get_corner_radii (panel);
+  g_assert_cmpint (g_array_index (radii1, int, GM_CORNER_POSITION_TOP_LEFT), ==, 10);
+  g_assert_cmpint (g_array_index (radii1, int, GM_CORNER_POSITION_TOP_RIGHT), ==, 11);
+  g_assert_cmpint (g_array_index (radii1, int, GM_CORNER_POSITION_BOTTOM_RIGHT), ==, 12);
+  g_assert_cmpint (g_array_index (radii1, int, GM_CORNER_POSITION_BOTTOM_LEFT), ==, 13);
+
+  g_object_get (panel, "corner-radii", &radii2, NULL);
+  g_assert_cmpint (g_array_index (radii1, int, GM_CORNER_POSITION_TOP_LEFT), ==, 10);
+  g_assert_cmpint (g_array_index (radii1, int, GM_CORNER_POSITION_TOP_RIGHT), ==, 11);
+  g_assert_cmpint (g_array_index (radii1, int, GM_CORNER_POSITION_BOTTOM_RIGHT), ==, 12);
+  g_assert_cmpint (g_array_index (radii1, int, GM_CORNER_POSITION_BOTTOM_LEFT), ==, 13);
 
   g_assert_cmpint (gm_display_panel_get_width (panel), ==, 68);
   g_assert_cmpint (gm_display_panel_get_height (panel), ==, 145);
@@ -72,6 +129,7 @@ main (gint argc, gchar *argv[])
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/Gm/display-panel/parse", test_gm_display_panel_parse);
+  g_test_add_func ("/Gm/display-panel/corner_radii", test_gm_display_panel_corner_radii);
 
   return g_test_run ();
 }
