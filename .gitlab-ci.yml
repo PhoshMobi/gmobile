@@ -41,7 +41,7 @@ variables:
   FDO_UPSTREAM_REPO: World/Phosh/gmobile
   DEPS: >-
     ccache build-essential git gcovr
-  DEBIAN_IMAGE: debian:trixie
+  DEBIAN_IMAGE: debian:forky
 
 .before: &before
   - echo "man-db man-db/auto-update boolean false" | debconf-set-selections
