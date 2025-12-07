@@ -2,7 +2,11 @@ if not get_option('tests')
   subdir_done()
 endif
 
-test_env = ['G_DEBUG=gc-friendly,fatal-warnings', 'MALLOC_CHECK_=2', 'NO_AT_BRIDGE=1']
+test_env = environment()
+test_env.set('G_DEBUG', 'gc-friendly,fatal-warnings')
+test_env.set('MALLOC_CHECK_', '2')
+test_env.set('NO_AT_BRIDGE', '1')
+
 test_cflags = ['-DTEST_DATA_DIR="@0@"'.format(meson.current_source_dir() / 'data')]
 
 tests = ['cutout', 'display-panel', 'mcc-mnc', 'svg-path', 'timeout', 'utils', 'device-tree']
