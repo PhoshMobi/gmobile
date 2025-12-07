@@ -6,6 +6,12 @@ test_env = environment()
 test_env.set('G_DEBUG', 'gc-friendly,fatal-warnings')
 test_env.set('MALLOC_CHECK_', '2')
 test_env.set('NO_AT_BRIDGE', '1')
+# For -Db_sanitize=address
+test_env.set(
+  'LSAN_OPTIONS',
+  'suppressions=@0@/data/leak-suppress.txt'.format(meson.project_source_root()),
+)
+test_env.set('ASAN_OPTIONS', 'fast_unwind_on_malloc=0')
 
 test_cflags = ['-DTEST_DATA_DIR="@0@"'.format(meson.current_source_dir() / 'data')]
 
