@@ -174,12 +174,12 @@ gm_display_panel_serializable_deserialize_property (JsonSerializable *serializab
         JsonNode *element_node = json_array_get_element (array, i);
         g_autoptr (GmCutout) cutout = NULL;
 
-	if (JSON_NODE_HOLDS_OBJECT (element_node)) {
-	  cutout = GM_CUTOUT (json_gobject_deserialize (GM_TYPE_CUTOUT, element_node));
+        if (JSON_NODE_HOLDS_OBJECT (element_node)) {
+          cutout = GM_CUTOUT (json_gobject_deserialize (GM_TYPE_CUTOUT, element_node));
           g_list_store_append (cutouts, cutout);
-	} else {
-	  return FALSE;
-	}
+        } else {
+          return FALSE;
+        }
       }
       g_value_set_object (value, cutouts);
       return TRUE;
@@ -187,10 +187,10 @@ gm_display_panel_serializable_deserialize_property (JsonSerializable *serializab
     return FALSE;
   } else {
     return json_serializable_default_deserialize_property (serializable,
-							   property_name,
-							   value,
-							   pspec,
-							   property_node);
+                                                           property_name,
+                                                           value,
+                                                           pspec,
+                                                           property_node);
   }
   return FALSE;
 }
