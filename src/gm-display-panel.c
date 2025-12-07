@@ -168,11 +168,11 @@ gm_display_panel_serializable_deserialize_property (JsonSerializable *serializab
     } else if (JSON_NODE_TYPE (property_node) == JSON_NODE_ARRAY) {
       JsonArray *array = json_node_get_array (property_node);
       guint array_len = json_array_get_length (array);
-      GListStore *cutouts = g_list_store_new (GM_TYPE_CUTOUT);
+      g_autoptr (GListStore) cutouts = g_list_store_new (GM_TYPE_CUTOUT);
 
       for (int i = 0; i < array_len; i++) {
         JsonNode *element_node = json_array_get_element (array, i);
-        GmCutout *cutout;
+        g_autoptr (GmCutout) cutout = NULL;
 
 	if (JSON_NODE_HOLDS_OBJECT (element_node)) {
 	  cutout = GM_CUTOUT (json_gobject_deserialize (GM_TYPE_CUTOUT, element_node));
