@@ -207,7 +207,7 @@ gm_display_panel_json_serializable_iface_init (JsonSerializableIface *iface)
 static void
 gm_display_panel_finalize (GObject *object)
 {
-  GmDisplayPanel *self = GM_DISPLAY_PANEL(object);
+  GmDisplayPanel *self = GM_DISPLAY_PANEL (object);
 
   g_clear_object (&self->cutouts);
   g_clear_pointer (&self->name, g_free);
@@ -345,7 +345,7 @@ gm_display_panel_new (void)
 GmDisplayPanel *
 gm_display_panel_new_from_data (const gchar *data, GError **error)
 {
-  g_autoptr (JsonNode) node = json_from_string(data, error);
+  g_autoptr (JsonNode) node = json_from_string (data, error);
   if (!node)
     return NULL;
 
@@ -356,7 +356,7 @@ gm_display_panel_new_from_data (const gchar *data, GError **error)
  * gm_display_panel_new_from_resource:
  * @resource_name: A path to a gresource
  * @error: Return location for an error
-  *
+ *
  * Constructs a new display panel by fetching the data from the given
  * GResource. If that fails `NULL` is returned and `error` describes
  * the error that occurred.
@@ -379,7 +379,8 @@ gm_display_panel_new_from_resource (const gchar *resource_name, GError **error)
   if (bytes == NULL)
     return NULL;
 
-  return GM_DISPLAY_PANEL (gm_display_panel_new_from_data ((const char *)g_bytes_get_data (bytes, NULL),
+  return GM_DISPLAY_PANEL (gm_display_panel_new_from_data ((const char *)g_bytes_get_data (bytes,
+                                                                                           NULL),
                                                            error));
 }
 
