@@ -9,6 +9,7 @@
 #define GMOBILE_USE_UNSTABLE_API
 #include "gmobile.h"
 
+#include <json-glib/json-glib.h>
 
 static void
 test_gm_display_panel_parse (void)
@@ -31,6 +32,7 @@ test_gm_display_panel_parse (void)
   g_autoptr (GError) err = NULL;
   g_autoptr (GmDisplayPanel) panel = NULL;
   g_autoptr (GmCutout) cutout = NULL;
+  g_autofree char *out = NULL;
   GListModel *cutouts;
   const GmRect *bounds;
 
@@ -57,6 +59,10 @@ test_gm_display_panel_parse (void)
 
   g_assert_cmpint (gm_display_panel_get_width (panel), ==, 68);
   g_assert_cmpint (gm_display_panel_get_height (panel), ==, 145);
+
+  out = json_gobject_to_data (G_OBJECT (panel), NULL);
+  g_assert_nonnull (out);
+  g_test_message ("Out: %s", out);
 }
 
 

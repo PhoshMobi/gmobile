@@ -137,7 +137,7 @@ gm_display_panel_serializable_serialize_property (JsonSerializable *serializable
   JsonNode *node = NULL;
 
   if (g_strcmp0 (property_name, "cutouts") == 0) {
-    JsonArray *array = json_array_sized_new (1);
+    g_autoptr (JsonArray) array = json_array_sized_new (1);
 
     for (int i = 0; i < g_list_model_get_n_items (G_LIST_MODEL (self->cutouts)); i++) {
       g_autoptr (GObject) cutout = g_list_model_get_item (G_LIST_MODEL (self->cutouts), i);
