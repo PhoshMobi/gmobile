@@ -136,7 +136,7 @@ gm_device_info_init (GmDeviceInfo *self)
  * Since: 0.0.1
  */
 GmDeviceInfo *
-gm_device_info_new (const char * const *compatibles)
+gm_device_info_new (const char * const compatibles[])
 {
   return GM_DEVICE_INFO (g_object_new (GM_TYPE_DEVICE_INFO,
                                        "compatibles", compatibles,
