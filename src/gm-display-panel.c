@@ -137,7 +137,7 @@ gm_display_panel_serializable_serialize_property (JsonSerializable *serializable
   JsonNode *node = NULL;
 
   if (g_strcmp0 (property_name, "cutouts") == 0) {
-    JsonArray *array = json_array_sized_new (1);
+    g_autoptr (JsonArray) array = json_array_sized_new (1);
 
     for (int i = 0; i < g_list_model_get_n_items (G_LIST_MODEL (self->cutouts)); i++) {
       g_autoptr (GObject) cutout = g_list_model_get_item (G_LIST_MODEL (self->cutouts), i);
@@ -168,18 +168,18 @@ gm_display_panel_serializable_deserialize_property (JsonSerializable *serializab
     } else if (JSON_NODE_TYPE (property_node) == JSON_NODE_ARRAY) {
       JsonArray *array = json_node_get_array (property_node);
       guint array_len = json_array_get_length (array);
-      GListStore *cutouts = g_list_store_new (GM_TYPE_CUTOUT);
+      g_autoptr (GListStore) cutouts = g_list_store_new (GM_TYPE_CUTOUT);
 
       for (int i = 0; i < array_len; i++) {
         JsonNode *element_node = json_array_get_element (array, i);
-        GmCutout *cutout;
+        g_autoptr (GmCutout) cutout = NULL;
 
-	if (JSON_NODE_HOLDS_OBJECT (element_node)) {
-	  cutout = GM_CUTOUT (json_gobject_deserialize (GM_TYPE_CUTOUT, element_node));
+        if (JSON_NODE_HOLDS_OBJECT (element_node)) {
+          cutout = GM_CUTOUT (json_gobject_deserialize (GM_TYPE_CUTOUT, element_node));
           g_list_store_append (cutouts, cutout);
-	} else {
-	  return FALSE;
-	}
+        } else {
+          return FALSE;
+        }
       }
       g_value_set_object (value, cutouts);
       return TRUE;
@@ -187,10 +187,10 @@ gm_display_panel_serializable_deserialize_property (JsonSerializable *serializab
     return FALSE;
   } else {
     return json_serializable_default_deserialize_property (serializable,
-							   property_name,
-							   value,
-							   pspec,
-							   property_node);
+                                                           property_name,
+                                                           value,
+                                                           pspec,
+                                                           property_node);
   }
   return FALSE;
 }
@@ -207,7 +207,7 @@ gm_display_panel_json_serializable_iface_init (JsonSerializableIface *iface)
 static void
 gm_display_panel_finalize (GObject *object)
 {
-  GmDisplayPanel *self = GM_DISPLAY_PANEL(object);
+  GmDisplayPanel *self = GM_DISPLAY_PANEL (object);
 
   g_clear_object (&self->cutouts);
   g_clear_pointer (&self->name, g_free);
@@ -345,7 +345,7 @@ gm_display_panel_new (void)
 GmDisplayPanel *
 gm_display_panel_new_from_data (const gchar *data, GError **error)
 {
-  g_autoptr (JsonNode) node = json_from_string(data, error);
+  g_autoptr (JsonNode) node = json_from_string (data, error);
   if (!node)
     return NULL;
 
@@ -356,7 +356,7 @@ gm_display_panel_new_from_data (const gchar *data, GError **error)
  * gm_display_panel_new_from_resource:
  * @resource_name: A path to a gresource
  * @error: Return location for an error
-  *
+ *
  * Constructs a new display panel by fetching the data from the given
  * GResource. If that fails `NULL` is returned and `error` describes
  * the error that occurred.
@@ -379,7 +379,8 @@ gm_display_panel_new_from_resource (const gchar *resource_name, GError **error)
   if (bytes == NULL)
     return NULL;
 
-  return GM_DISPLAY_PANEL (gm_display_panel_new_from_data ((const char *)g_bytes_get_data (bytes, NULL),
+  return GM_DISPLAY_PANEL (gm_display_panel_new_from_data ((const char *)g_bytes_get_data (bytes,
+                                                                                           NULL),
                                                            error));
 }
 

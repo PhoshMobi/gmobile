@@ -10,6 +10,8 @@
 #include "gm-rect.h"
 #include "gm-svg-path.h"
 
+#include <json-glib/json-glib.h>
+
 #include <gio/gio.h>
 
 /**
@@ -46,7 +48,39 @@ struct _GmCutout {
   GmRect    bounds;
 };
 
-G_DEFINE_TYPE (GmCutout, gm_cutout, G_TYPE_OBJECT);
+static void gm_cutout_json_serializable_iface_init (JsonSerializableIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (GmCutout, gm_cutout, G_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (JSON_TYPE_SERIALIZABLE,
+                                                gm_cutout_json_serializable_iface_init));
+
+
+static JsonNode *
+gm_cutout_serializable_serialize_property (JsonSerializable *serializable,
+                                           const gchar      *property_name,
+                                           const GValue     *value,
+                                           GParamSpec       *pspec)
+{
+  JsonNode *node = NULL;
+
+  if (g_strcmp0 (property_name, "bounds") == 0) {
+    return NULL;
+  } else {
+    node = json_serializable_default_serialize_property (serializable,
+                                                         property_name,
+                                                         value,
+                                                         pspec);
+  }
+  return node;
+}
+
+
+static void
+gm_cutout_json_serializable_iface_init (JsonSerializableIface *iface)
+{
+  iface->serialize_property = gm_cutout_serializable_serialize_property;
+}
+
 
 static gboolean
 gm_cutout_set_path (GmCutout *self, const char *path, GError **err)

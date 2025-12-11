@@ -9,28 +9,30 @@
 #define GMOBILE_USE_UNSTABLE_API
 #include "gmobile.h"
 
+#include <json-glib/json-glib.h>
 
 static void
 test_gm_display_panel_parse (void)
 {
   const char *json = "                                "
-    "{                                                "
-    " \"name\": \"Oneplus 6T\",                       "
-    " \"x-res\": 1080,                                "
-    " \"y-res\": 2340,                                "
-    " \"border-radius\": 10,                          "
-    " \"width\": 68,                                  "
-    " \"height\": 145,                                "
-    " \"cutouts\" : [                                 "
-    "     {                                           "
-    "        \"name\": \"notch\",                     "
-    "        \"path\": \"M 455 0 V 79 H 625 V 0 Z\"   "
-    "     }                                           "
-    "  ]                                              "
-    "}                                                ";
+                     "{                                                "
+                     " \"name\": \"Oneplus 6T\",                       "
+                     " \"x-res\": 1080,                                "
+                     " \"y-res\": 2340,                                "
+                     " \"border-radius\": 10,                          "
+                     " \"width\": 68,                                  "
+                     " \"height\": 145,                                "
+                     " \"cutouts\" : [                                 "
+                     "     {                                           "
+                     "        \"name\": \"notch\",                     "
+                     "        \"path\": \"M 455 0 V 79 H 625 V 0 Z\"   "
+                     "     }                                           "
+                     "  ]                                              "
+                     "}                                                ";
   g_autoptr (GError) err = NULL;
   g_autoptr (GmDisplayPanel) panel = NULL;
   g_autoptr (GmCutout) cutout = NULL;
+  g_autofree char *out = NULL;
   GListModel *cutouts;
   const GmRect *bounds;
 
@@ -57,6 +59,10 @@ test_gm_display_panel_parse (void)
 
   g_assert_cmpint (gm_display_panel_get_width (panel), ==, 68);
   g_assert_cmpint (gm_display_panel_get_height (panel), ==, 145);
+
+  out = json_gobject_to_data (G_OBJECT (panel), NULL);
+  g_assert_nonnull (out);
+  g_test_message ("Out: %s", out);
 }
 
 
