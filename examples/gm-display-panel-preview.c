@@ -28,7 +28,7 @@ build_svg (GmDisplayPanel *panel)
   GString *svg = g_string_new ("");
   int xres = gm_display_panel_get_x_res (panel);
   int yres = gm_display_panel_get_y_res (panel);
-  int radius = gm_display_panel_get_border_radius (panel);
+  const int *radii = gm_display_panel_get_corner_radii_array (panel);
   GListModel *cutouts;
 
   g_string_append_printf (svg,
@@ -47,14 +47,14 @@ build_svg (GmDisplayPanel *panel)
                     " stroke=\"black\" stroke-width=\"2\" fill=\"lightgrey\" />\n",
                           xres + 2 * X_OFF, yres + 2 * Y_OFF,
                           X_OFF, Y_OFF,
-                          radius,
-                          radius, radius, radius, -radius,
-                          xres - 2 * radius,
-                          radius, radius, radius, radius,
-                          yres - 2 * radius,
-                          radius, radius, -radius, radius,
-                          -xres + 2 * radius,
-                          radius, radius, -radius, -radius);
+                          radii[0],
+                          radii[0], radii[0], radii[0], -radii[0],
+                          xres - 2 * radii[1],
+                          radii[1], radii[1], radii[1], radii[1],
+                          yres - 2 * radii[2],
+                          radii[2], radii[2], -radii[2], radii[2],
+                          -xres + 2 * radii[3],
+                          radii[3], radii[3], -radii[3], -radii[3]);
 
   cutouts = gm_display_panel_get_cutouts (panel);
   for (int i = 0; i < g_list_model_get_n_items (cutouts); i++) {

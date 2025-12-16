@@ -18,7 +18,7 @@ G_BEGIN_DECLS
 
 G_DECLARE_FINAL_TYPE (GmDeviceInfo, gm_device_info, GM, DEVICE_INFO, GObject)
 
-GmDeviceInfo    *gm_device_info_new (const char * const *compatibles);
+GmDeviceInfo    *gm_device_info_new (const char * const compatibles[]);
 GmDisplayPanel  *gm_device_info_get_display_panel (GmDeviceInfo *self);
 
 G_END_DECLS
