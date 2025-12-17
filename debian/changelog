@@ -1,3 +1,55 @@
+gmobile (0.6.0~beta1) experimental; urgency=medium
+
+  [ Guido Günther ]
+  * display-panel-run-phosh: Send SIGTERM.
+    Send SIGTERM to phoc for clean shutdown.
+  * display-panel-run-phosh: Allow to take screenshot.
+    Allow to take a screenshot via `-S name`. We use
+    a delayed callback to give phosh enough time to start
+    so we don't accidentally bind to another process exposing
+    the same API. Should that not prove to be robust enough
+    we can spawn a separate bus.
+    Closes: https://gitlab.gnome.org/World/Phosh/gmobile/-/issues/10
+  * data: Fix match rule description.
+    Fixes: 249da02 ("data: Introduce udev rules and hwdb to track wakeup keys")
+  * data: Add hwdb for torch brightness.
+    This allows to specify a minimum brightness.
+  * display-panel-run-phosh: Don't assert when not taking screenshots.
+    Fixes: 9a8e066 ("display-panel-run-phosh: Allow to take screenshot")
+  * display-panel-run-phosh: Use `fake-builtin`
+    Cutouts are only rendered for builtin panels
+  * display-panel-run-phosh: Allow to configure phoc.
+    This makes it easier to test phoc changes regarding cutouts
+  * tests/cutout: Don't leak cutout
+  * display-panel: Don't leak on JSON parsing
+  * tests: Ease running with valgrind
+  * ci: Switch to forky
+  * ci: Run ASAN in CI
+  * render-all: Trap on warnings.
+    This makes sure we can pass all display panels without warnings.
+  * cutout: Handle serializing properties.
+    We don't want to serialize the bounding box so we need to skip it.
+  * display-panel: Fix leaks on serialize
+  * data: Fix nothing phone camera cutout.
+    The current path is a triangle, let's make it a square. This
+    has no effect on the resulting bounding box.
+    Ideally we'd use a circle that approximate the camera but we
+    don't have such a device to test.
+    Fixes: d5e36f8 ("data: Add display information for nothing,spacewar")
+  * display-panel: Allow for different top and bottom corner radii.
+    In fact we treat all four corners separately to be able to handle all
+    kinds of (rectangular) displays.
+    Closes: https://gitlab.gnome.org/World/Phosh/gmobile/-/issues/5
+  * examples: Add python example.
+    Useful to test bindings
+  * data: Use bottom border radius for enchilada.
+    Thanks fossdd for caring about the future
+
+  [ Robert Eckelmann ]
+  * data: Add more torch min brightness values
+
+ -- Guido Günther <agx@sigxcpu.org>  Wed, 17 Dec 2025 16:04:33 +0100
+
 gmobile (0.5.0) experimental; urgency=medium
 
   [ Luca Weiss ]
