@@ -1,3 +1,17 @@
+gmobile 0.6.0~beta1
+-------------------
+Released December 2025
+* Allow for different corner radii
+* Add hwdb and udev rule to configure minimum torch brightness
+* Oneplus 6: Use different corner radii for top and bottom
+* Leak fixes
+* Issues fixed:
+    * https://gitlab.gnome.org/World/Phosh/gmobile/-/issues/10
+    * https://gitlab.gnome.org/World/Phosh/gmobile/-/issues/5
+* Contributors:
+    * Guido Günther
+    * Robert Eckelmann
+
 gmobile 0.5.0
 -------------
 Released November 2025

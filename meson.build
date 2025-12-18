@@ -1,7 +1,7 @@
 project(
   'gmobile',
   'c',
-  version: '0.5.0',
+  version: '0.6.0.beta1',
   license: 'LGPLv2.1+',
   meson_version: '>= 0.56.1',
   default_options: ['warning_level=1', 'buildtype=debugoptimized', 'c_std=gnu11'],
