@@ -338,7 +338,7 @@ normalize_path (const char *path)
  * @x1: The lower x coordinate
  * @x2: The upper x coordinate
  * @y1: The lower y coordinate
- * @y2: The upper x coordinate
+ * @y2: The upper y coordinate
  * @err: Return location for an error
  *
  * Returns the bounding box of an SVG path. As this is meant for
