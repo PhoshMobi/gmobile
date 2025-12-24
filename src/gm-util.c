@@ -55,17 +55,17 @@ gm_list_devices (void)
                                             G_RESOURCE_LOOKUP_FLAGS_NONE,
                                             &err);
 
-   if (!children) {
-     g_critical ("Failed to enumerate known devices: %s", err->message);
-     return NULL;
-   }
+  if (!children) {
+    g_critical ("Failed to enumerate known devices: %s", err->message);
+    return NULL;
+  }
 
-   for (int i = 0; children[i]; i++) {
-     if (!g_str_has_suffix (children[i], ".json"))
-       continue;
+  for (int i = 0; children[i]; i++) {
+    if (!g_str_has_suffix (children[i], ".json"))
+      continue;
 
-     g_strv_builder_take (builder, g_strndup (children[i], strlen(children[i]) - 5));
-   }
+    g_strv_builder_take (builder, g_strndup (children[i], strlen (children[i]) - 5));
+  }
 
-   return g_strv_builder_end (builder);
+  return g_strv_builder_end (builder);
 }
