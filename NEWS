@@ -1,5 +1,5 @@
-gmobile 0.6.0~beta1
--------------------
+gmobile 0.6.0
+-------------
 Released December 2025
 * Allow for different corner radii
 * Add hwdb and udev rule to configure minimum torch brightness
