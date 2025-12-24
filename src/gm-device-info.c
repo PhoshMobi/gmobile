@@ -11,7 +11,7 @@
 #include "gm-device-info.h"
 #include "gm-display-panel.h"
 
-#define GM_RESOURCE_PREFIX "/org/gnome/gmobile/"
+#define GM_RESOURCE_PREFIX "/mobi/phosh/gmobile/"
 #define GM_DISPLAY_PANEL_RESOURCE_PREFIX GM_RESOURCE_PREFIX "devices/display-panels/"
 
 /**

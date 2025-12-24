@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/org/gnome/gmobile/">
+  <gresource prefix="/mobi/phosh/gmobile/">
     <!-- Devices with one panel matched by their DT compatible -->
     <file preprocess="json-stripblanks">devices/display-panels/daria,zahedan.json</file>
     <file preprocess="json-stripblanks">devices/display-panels/fairphone,fp4.json</file>

@@ -51,7 +51,7 @@ gm_list_devices (void)
   g_autoptr (GStrvBuilder) builder = g_strv_builder_new ();
 
   children = g_resource_enumerate_children (resource,
-                                            "/org/gnome/gmobile/devices/display-panels/",
+                                            "/mobi/phosh/gmobile/devices/display-panels/",
                                             G_RESOURCE_LOOKUP_FLAGS_NONE,
                                             &err);
 
