@@ -1,3 +1,9 @@
+gmobile (0.6.0) experimental; urgency=medium
+
+  * treewide: Move resources into our canonical namespace
+
+ -- Guido Günther <agx@sigxcpu.org>  Wed, 24 Dec 2025 13:00:13 +0100
+
 gmobile (0.6.0~beta1) experimental; urgency=medium
 
   [ Guido Günther ]
