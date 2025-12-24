@@ -149,6 +149,10 @@ check-meson:
   extends:
     - .phosh-check-meson
 
+check-consistency:
+  stage: style-checks
+  extends: .phosh-check-consistency
+
 package-deb-debian-trixie:arm64:
   stage: package
   variables:
