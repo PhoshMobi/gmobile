@@ -49,11 +49,11 @@ build_svg (GmDisplayPanel *panel)
                           X_OFF, Y_OFF,
                           radii[0],
                           radii[0], radii[0], radii[0], -radii[0],
-                          xres - 2 * radii[1],
+                          xres - radii[0] - radii[1],
                           radii[1], radii[1], radii[1], radii[1],
-                          yres - 2 * radii[2],
+                          yres - radii[1] - radii[2],
                           radii[2], radii[2], -radii[2], radii[2],
-                          -xres + 2 * radii[3],
+                          -xres + radii[2] + radii[3],
                           radii[3], radii[3], -radii[3], -radii[3]);
 
   cutouts = gm_display_panel_get_cutouts (panel);
