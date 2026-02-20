@@ -21,7 +21,7 @@
 #include <math.h>
 
 #define PHOC_BIN "phoc"
-#define PHOSH_BIN "/usr/libexec/phosh"
+#define PHOSH_BIN LIBEXECDIR "/phosh"
 
 GMainLoop   *loop;
 GSubprocess *phoc;
