@@ -1,3 +1,35 @@
+gmobile (0.7.0) experimental; urgency=medium
+
+  [ Guido Günther ]
+  * display-panel-preview: Fix corner radii calculation.
+    We need to take each corner radius into account when
+    calculating the horizontal and vertical line lengths.
+    Fixes: 4656c26 ("display-panel: Allow for different top and bottom corner radii")
+
+  [ Achill Gilgenast ]
+  * data: Add display information for shift,axolotl
+  * display-panel-run-phosh: Use meson's libexecdir to guess libexecdir of
+    phosh. Instead of hardcoding /usr/libexec as libexecdir, other builds might
+    install phosh with another libexecdir like /usr/lib. So if they build
+    gmobile with /usr/lib, chances are high that they also built phosh with the
+    same /usr/lib.
+
+  [ Pedro Alves ]
+  * data: Rename pixel devices to match mainline.
+    The Pixel 6 and 6 pro are both supported in the mainline kernel now, but
+    their compatibles are in the form of google,gs101-[device] rather than
+    pixel,[device] as specified in this repo.
+    This commit fixes that incompatibility by renaming them to match
+    mainline.
+  * data: Add cutout for bluejay (Pixel 6a)
+    The cutout path has been taken from Android sources:
+
+  [ Val Packett ]
+  * data: Add cutout for dubai (Motorola edge 30), river (Motorola Moto G7)
+    Derived from Android sources.
+
+ -- Guido Günther <agx@sigxcpu.org>  Thu, 26 Mar 2026 09:27:57 +0100
+
 gmobile (0.6.0) experimental; urgency=medium
 
   * treewide: Move resources into our canonical namespace
