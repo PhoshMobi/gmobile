@@ -1,0 +1,14 @@
+{
+  "name": "Apple MacBook Pro (14-inch, M2 Pro, 2023)",
+  "x-res": 3024,
+  "y-res": 1964,
+  "corner-radii": [40, 40, 0, 0],
+  "width": 302,
+  "height": 196,
+  "cutouts": [
+    {
+      "name": "notch",
+      "path": "M 1328,0 L 1696,0 L 1696,43 C 1696,55 1685,64 1673,64 L 1351,64 C 1339,64 1328,55 1328,43 Z"
+    }
+  ]
+}
