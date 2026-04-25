@@ -35,5 +35,6 @@
     <file preprocess="json-stripblanks">devices/display-panels/xiaomi,joyeuse.json</file>
     <file preprocess="json-stripblanks">devices/display-panels/xiaomi,onclite.json</file>
     <file preprocess="json-stripblanks">devices/display-panels/xiaomi,lavender.json</file>
+    <file preprocess="json-stripblanks">devices/display-panels/xiaomi,sweet.json</file>
   </gresource>
 </gresources>
