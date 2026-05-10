@@ -1,3 +1,16 @@
+gmobile (0.7.1) experimental; urgency=medium
+
+  [ David Heidelberg ]
+  * data: Add cutout for apple,j414s (MacBook Pro 14-inch, M2 Pro, 2023)
+  * data: Add cutout for apple,j314s (MacBook Pro 14-inch, M1 Pro, 2021)
+    Tested-By: Zach DeCook <zachdecook@librem.one>
+
+  [ Piotr Lange ]
+  * data: Add cutout for sweet (Xiaomi Redmi Note 10 Pro)
+    Based on LineageOS' config
+
+ -- Guido Günther <agx@sigxcpu.org>  Sun, 10 May 2026 09:46:30 +0200
+
 gmobile (0.7.0) experimental; urgency=medium
 
   [ Guido Günther ]
