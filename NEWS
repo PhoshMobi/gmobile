@@ -1,3 +1,15 @@
+gmobile 0.7.1
+-------------
+Released May 2026
+* Display panel support for:
+    * MacBook Pro 14-inch, M1 Pro, 2021
+    * MacBook Pro 14-inch, M2 Pro, 2023
+    * Xiaomi Redmi Note 10 Pro
+* Contributors:
+    * David Heidelberg
+    * Piotr Lange
+    * Zach DeCook
+
 gmobile 0.7.0
 -------------
 Released March 2026
