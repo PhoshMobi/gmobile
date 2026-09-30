@@ -1,7 +1,11 @@
 gmobile 0.7.4
 -------------
 Released September 2026
-
+* Display panel support for:
+    * Google Pixel 3 XL (crosshatch)
+* Improvements:
+    * data: really ship Google Pixel 9a support
+    * Fairphone 5: Bump corner radii
 * Contributors:
     * David Heidelberg
     * Guido Günther
@@ -12,7 +16,7 @@ gmobile 0.7.3
 -------------
 Released August 2026
 * Display panel support for:
-    * Pixel 9a (tegu)
+    * Google Pixel 9a (tegu)
 * Wakeup key support for:
     * Juno Tablet 4 LTE & Wifi
     * Nothing Phone 1
