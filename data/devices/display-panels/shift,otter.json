@@ -1,0 +1,12 @@
+{
+  "name": "SHIFT SHIFTphone 8",
+  "x-res": 1080,
+  "y-res": 2400,
+  "border-radius": 50,
+  "cutouts": [
+    {
+      "name": "camera",
+      "path": "M 508,46.5 a 32,32,0,1,0,64,0 a 32,32,0,1,0,-64,0 Z"
+    }
+  ]
+}
