@@ -175,11 +175,18 @@ gmobile:name:pm8941_resin:dt:samsung,a5*
 # SHIFT GmbH
 ###########################################################
 
-# SHIFT6mq phone. 114,115 are volume keys
+# SHIFT6mq (axolotl). 114,115 are volume keys
 gmobile:name:pm8941_resin:dt:shift,axolotl*
  GM_WAKEUP_KEY_114=0
 
 gmobile:name:gpio-keys:dt:shift,axolotl*
+ GM_WAKEUP_KEY_115=0
+
+# SHIFTphone 8 (otter). 114,115 are volume keys
+gmobile:name:pm8941_resin:dt:shift,otter*
+ GM_WAKEUP_KEY_114=0
+
+gmobile:name:gpio-keys:dt:shift,otter*
  GM_WAKEUP_KEY_115=0
 
 ###########################################################
