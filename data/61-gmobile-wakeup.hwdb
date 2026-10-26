@@ -116,6 +116,17 @@ gmobile:atkbd:dmi:bvnAMI:bvr*:svnJunoComputers:pnjunotab4-wifi:*
  GM_WAKEUP_KEY_115=0
 
 ###########################################################
+# Motorola
+###########################################################
+
+# Moto G10 (capri)
+gmobile:name:pm8941_resin:dt:motorola,capri*
+ GM_WAKEUP_KEY_114=0
+
+gmobile:name:gpio-keys:dt:motorola,capri*
+ GM_WAKEUP_KEY_115=0
+
+###########################################################
 # OnePlus
 ###########################################################
 
