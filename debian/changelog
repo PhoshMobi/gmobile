@@ -1,3 +1,25 @@
+gmobile (0.7.5) experimental; urgency=medium
+
+  [ Guido Günther ]
+  * doc: Update news file.
+    Fixes: 5871a75 ("treewide: Document changes and release 0.7.4")
+
+  [ Alexander Martinz ]
+  * data: Add cutout for otter (SHIFTphone 8)
+  * data: Align cutout name for xiaomi,sweet with other devices
+  * data/hwdb: Add wakeup keys for SHIFTphone 8 (otter)
+  * meson: Bump version requirement from 0.56.1 to 0.58.0
+    ```
+    WARNING: Project specifies a minimum meson_version '>= 0.56.1' but uses features which were added in newer versions:
+     * 0.58.0: {'format strings'}
+    ```
+
+  [ Michael McAllister ]
+  * data: Add display panel for Motorola Moto G10 (capri)
+  * data/hwdb: Add wakeup keys for Motorola Moto G10.
+
+ -- Guido Günther <agx@sigxcpu.org>  Thu, 05 Nov 2026 16:54:59 +0100
+
 gmobile (0.7.4) experimental; urgency=medium
 
   [ Steffen Deusch ]
